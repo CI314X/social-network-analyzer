@@ -1,1 +1,4 @@
 *.ipynb
+downloaded_graphs/*
+.vscode/*
+__pycache__/*
