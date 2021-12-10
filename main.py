@@ -48,7 +48,7 @@ def main_form_vl_statistics():
             valid = validate_email(email)
             email = valid.email
             vk = vk_api.VkApi(token=random.choice(access_token))
-            vk_id, is_closed = resolve_url_to_id(vk, id_link)
+            vk_id, is_closed, can_access_closed = resolve_url_to_id(vk, id_link)
         except EmailNotValidError as e:
             return f'<p>Wrong email. {str(e)}</p>'
         except vk_api.vk_api.ApiError as e:
@@ -56,7 +56,7 @@ def main_form_vl_statistics():
         except:
             return f'<p>Unknown error</p>'
 
-        if is_closed:
+        if is_closed and not can_access_closed:
             return f'<p>Account is closed, no access to information</p>'
 
         if option_downloading_vk not in ['fast', 'slow']:
