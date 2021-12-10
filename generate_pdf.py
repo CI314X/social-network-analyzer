@@ -52,7 +52,7 @@ def generate_vk_pdf(name_pdf: str, user_id: int, user_name: str, option_download
     vk = VkGraph(access_token=access_token, user_id=int(user_id))
     g, info = vk.make_graph(option_downloading_vk)
     if g is None or info is None:
-        print("Error in vk.make_graph")
+        logger.error("Error in vk.make_graph")
         return
     g, info, n_deactivated, n_isolated = preprocessing_graph(g, info)
     

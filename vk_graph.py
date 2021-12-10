@@ -1,3 +1,4 @@
+from logging import log
 from typing import Tuple, Union, List
 import networkx as nx
 import requests
@@ -74,7 +75,7 @@ class VkGraph():
         r = requests.get(self.request_url('friends.get',
                 'user_id=%s&fields=uid,first_name,last_name,photo' % idd)).json()
         if 'error' in r.keys():
-            print(r)
+            logger.warn(str(r))
         else:
             r = r['response']
             self.users_info = {item['id']: item for item in r['items']}
