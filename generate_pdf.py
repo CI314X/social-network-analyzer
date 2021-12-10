@@ -5,7 +5,7 @@ from transliterate import translit
 from delete_file import delete_file
 from vk_graph import VkGraph
 from config import access_token
-from analyzer import preprocessing_graph, create_digree_distrbution, make_metrics_for_table, create_picture_social_network
+from analyzer import preprocessing_graph, create_degree_distrbution, make_metrics_for_table, create_picture_social_network
 from custom_logger import logger
 
 class PDF(FPDF):
@@ -98,7 +98,7 @@ def generate_vk_pdf(name_pdf: str, user_id: int, user_name: str, option_download
     pdf.cell(we, he, f"Graph's diameter: {average_diam}", border=0, ln=1, center=False)
 
     # add histogramm
-    picture_name = create_digree_distrbution(g, user_id);
+    picture_name = create_degree_distrbution(g, user_id);
     pdf.image(picture_name, x=100, y=36, w=100, h=0);
     delete_file(picture_name)
     # structural analysis

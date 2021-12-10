@@ -16,6 +16,28 @@ from custom_logger import logger
 
 
 def preprocessing_graph(g: nx.Graph, info: dict) -> Tuple[nx.Graph, dict, int, int]:
+    """
+    Remove from graph deactivated and isolated  (degree = 1) users
+
+    Parameters
+    ----------
+    g: nx.Graph
+        graph of friends
+    info_id: int
+        just for saving picture
+
+    Returns
+    -------
+    nx.Graph
+        modified friend's graph
+    dict
+        modified information about users
+    int
+        number of deactivated users
+    int
+        number of isolated users    
+    """
+    
     n_deactivated = 0
     for i in list(info.keys()):
         if info[i].get('deactivated'):
@@ -51,7 +73,21 @@ def curve_fit_log(xdata: set, ydata: list) -> np.array:
     return ydatafit_log
 
 
-def create_digree_distrbution(g: nx.Graph, info_id: int) -> str:
+def create_degree_distrbution(g: nx.Graph, info_id: int) -> str:
+    """
+    Creates histogram of graph
+    Parameters
+    ----------
+    g: nx.Graph
+        graph of friends
+    info_id: int
+        just for saving picture
+
+    Returns
+    -------
+    str
+        name of created histogram
+    """
     degree = dict(g.degree())
     degree_values = sorted(set(degree.values()))
     hist = [list(degree.values()).count(x) for x in degree_values]
@@ -117,10 +153,21 @@ def make_column_for_one_metric(metrics, info: dict, n: int, type_graph: str) -> 
     
 def make_metrics_for_table(g: nx.Graph, info: dict, n: int, type_graph: str ='vk') -> Tuple[List[str], list]:
     """
-    g: graph
-    info: information about users
-    n: number of top metrics
-    return: column_names, rows
+    Parameters
+    ----------
+    g: nx.Graph
+        graph
+    info: dict
+        information about users
+    n: int 
+        number of top metrics
+    
+    Return
+    ----------
+    column_names: list
+        a list of column names for table
+    rows: List[list]
+        list of metrics for every column
     """
     column_names = ["Betweenness", "Closeness", "Pagerank", "Degree"]
     rows = [[], [], [], []]
@@ -137,11 +184,23 @@ def make_metrics_for_table(g: nx.Graph, info: dict, n: int, type_graph: str ='vk
 
 def create_picture_social_network(g: nx.Graph, info: dict, user_id: int, type_graph: str) -> Tuple[list, str]:
     """
-    g: graph
-    info: information about users
-    user_id: using just for saving images
-    type_graph: vk or facebook
-    return: names of main nodes in clusters and name of created picture
+    Parameters
+    ----------
+    g: nx.Graph
+        graph
+    info: dict
+        information about users
+    user_id: int
+        using just for saving images
+    type_graph: str
+        flag = vk or facebook
+    
+    Return
+    ----------
+    list
+        names of main nodes in clusters
+    str
+        name of created picture
     """
     part = community_louvain.best_partition(g)
     values = [part.get(node) for node in g.nodes()]

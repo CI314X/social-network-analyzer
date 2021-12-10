@@ -49,6 +49,7 @@ class VkGraph():
     make_graph(speed="fast")
         Run a process of a creating friend's graph
     """
+    
     def __init__(self, access_token: List[str], user_id: int):
         """user_id - who will be analyzed"""
         self._access_token= access_token

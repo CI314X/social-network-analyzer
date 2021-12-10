@@ -1,7 +1,4 @@
-from flask import Flask, render_template, request, jsonify, abort, redirect, Response
-from flask_wtf import FlaskForm
-from wtforms import StringField
-from wtforms.validators import DataRequired
+from flask import Flask, render_template, request, abort
 from flask_mail import Mail, Message
 from config import ADMINS, access_token
 import random
@@ -14,8 +11,6 @@ from email_validator import validate_email, EmailNotValidError
 from vk_graph import resolve_url_to_id
 import vk_api
 
-import sys
-import logging
 
 app = Flask(__name__)
 app.config.from_object('config')
@@ -27,7 +22,23 @@ from custom_logger import logger
 
 
 def create_and_send_message(user_name: str, id_link: int, email: str, pdf_name: str, option_downloading_vk: str) -> None:
-
+    """
+    Creates pdf and send message to a given email
+    
+    Parameters
+    ----------
+    user_name: str
+        User name
+    id_link: int
+        id in vk.com
+    email: str
+        given email
+    pdf_name: str
+        name of the PDF file to create
+    option_downloading_vk: str
+        either "fast" or "slow" - type of creating friend's graph
+    
+    """
     generate_vk_pdf(pdf_name, id_link, user_name, option_downloading_vk)
 
     message = Message('VK statistics', sender = ADMINS[0], recipients = [email])
@@ -44,6 +55,9 @@ def create_and_send_message(user_name: str, id_link: int, email: str, pdf_name: 
 
 @app.route('/vk_statistics', methods=['GET', 'POST'])
 def main_form_vl_statistics():
+    """
+    On this page you can specify data for analysis
+    """
     if request.method == 'POST':
         email = request.form.get('email')
         user_name = request.form.get('user_name')
@@ -93,7 +107,10 @@ def main_form_vl_statistics():
 
 
 @app.route("/")
-def hello_world():
+def root():
+    """
+    Main page with all information
+    """
     return render_template('root.html')
 
 
