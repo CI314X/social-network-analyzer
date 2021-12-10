@@ -9,8 +9,10 @@ def resolve_url_to_id(vk, url):
     """convert user's url to id***"""
 
     screen_name = url.split('/')[-1]
-    _id = vk.method('users.get', {'user_ids': screen_name})[0]['id']
-    return _id
+    info = vk.method('users.get', {'user_ids': screen_name})[0]
+    _id = info['id']
+    _is_closed = info['is_closed']
+    return _id, _is_closed
 
 
 class VkGraph():
