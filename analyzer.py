@@ -12,8 +12,9 @@ from io import BytesIO
 from transliterate import translit
 import matplotlib.image as mpimg
 from delete_file import delete_file
+from custom_logger import logger
 
-def preprocessing_graph(g: nx.Graph, info: dict) -> Union[nx.Graph, dict, int, int]:
+def preprocessing_graph(g: nx.Graph, info: dict) -> Tuple[nx.Graph, dict, int, int]:
     n_deactivated = 0
     for i in list(info.keys()):
         if info[i].get('deactivated'):
@@ -40,7 +41,7 @@ def linlaw(x: float, a: float, b: float) -> float:
     return a + x * b
 
 
-def curve_fit_log(xdata, ydata) :
+def curve_fit_log(xdata: set, ydata: list) -> np.array:
     """Fit data to a power law with weights according to a log scale"""
     x_log = np.log10(xdata)
     y_log = np.log10(ydata)
@@ -49,7 +50,7 @@ def curve_fit_log(xdata, ydata) :
     return ydatafit_log
 
 
-def create_digree_distrbution(g: nx.Graph, info_id: dict) -> str:
+def create_digree_distrbution(g: nx.Graph, info_id: int) -> str:
     degree = dict(g.degree())
     degree_values = sorted(set(degree.values()))
     hist = [list(degree.values()).count(x) for x in degree_values]
@@ -72,7 +73,7 @@ def create_digree_distrbution(g: nx.Graph, info_id: dict) -> str:
     return picture_name
 
 
-def return_photo_vk(userid, info) -> Image:
+def return_photo_vk(userid: int, info: str) -> Image:
     url = info[userid]['photo']
     response = requests.get(url)
     img = Image.open(BytesIO(response.content))
@@ -80,13 +81,14 @@ def return_photo_vk(userid, info) -> Image:
 
 def take_top_metrics(x: dict, n: int) -> list:
     """
-    x - dictionary: ("id": number)
+    x: ("id": number)
     @return: [("id": metric)] - list of biggest n metrics with "id"
     """
     sorted_x = sorted(x.items(), key=operator.itemgetter(1))[::-1]
     return sorted_x[:n]
 
 def return_name(id_user: int, info: dict, type_graph: str) -> str:
+    """Concatenate name for vk or facebook"""
     if type_graph == 'vk':
         first_name = translit(info[id_user]['first_name'], "ru", reversed=True)
         first_name = first_name.encode('latin-1', 'ignore').decode("latin-1")
@@ -104,9 +106,8 @@ def make_column_for_one_metric(metrics, info: dict, n: int, type_graph: str) -> 
     
 def make_metrics_for_table(g: nx.Graph, info: dict, n: int, type_graph: str ='vk') -> Tuple[List[str], list]:
     """
-    g - graph
-    info - information about users (dictionary)
-    n - number of top metrics
+    info: information about users
+    n: number of top metrics
     return: column_names, rows
     """
     column_names = ["Betweenness", "Closeness", "Pagerank", "Degree"]

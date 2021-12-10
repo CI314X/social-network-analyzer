@@ -23,18 +23,7 @@ app.config.from_object('config')
 
 mail = Mail(app)
 
-logger_filename = 'logs.log'
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
-formatter = logging.Formatter('%(asctime)s | %(levelname)s | %(message)s')
-stdout_handler = logging.StreamHandler(sys.stdout)
-stdout_handler.setLevel(logging.DEBUG)
-stdout_handler.setFormatter(formatter)
-file_handler = logging.FileHandler(logger_filename)
-file_handler.setLevel(logging.DEBUG)
-file_handler.setFormatter(formatter)
-logger.addHandler(file_handler)
-logger.addHandler(stdout_handler)
+from custom_logger import logger
 
 
 def create_and_send_message(user_name: str, id_link: int, email: str, pdf_name: str, option_downloading_vk: str) -> None:
@@ -61,10 +50,10 @@ def main_form_vl_statistics():
         id_link = request.form.get('link')
         option_downloading_vk = request.form.get('option_download')
 
-        logger.info(f'Email: {email}')
-        logger.info(f'User name: {user_name}')
+        logger.info(f'email: {email}')
+        logger.info(f'user name: {user_name}')
         logger.info(f'vk id: {id_link}')
-        logger.info(f'Option: {option_downloading_vk}')
+        logger.info(f'option: {option_downloading_vk}')
 
         try:
             valid = validate_email(email)

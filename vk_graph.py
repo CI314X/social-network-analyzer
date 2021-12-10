@@ -1,12 +1,14 @@
-from logging import Logger
+from typing import Tuple, Union, List
 import networkx as nx
 import requests
 import random
 from collections import defaultdict
 import time
+import vk_api
+from custom_logger import logger
 
 
-def resolve_url_to_id(vk, url):
+def resolve_url_to_id(vk: vk_api.vk_api.VkApi, url: str) -> Tuple[int, bool, bool]:
     """convert user's url to id***"""
 
     screen_name = url.split('/')[-1]
@@ -18,7 +20,7 @@ def resolve_url_to_id(vk, url):
 
 
 class VkGraph():
-    def __init__(self, access_token, user_id):
+    def __init__(self, access_token: List[str], user_id: int):
         """user_id - who will be analyzed"""
         self._access_token= access_token
         self.api_version = 5.81
@@ -34,10 +36,10 @@ class VkGraph():
 
         return req_url
     
-    def friends(self, idd):
+    def friends(self, idd: str):
         """
         read https://vk.com/dev/friends.get
-        Принимает идентификатор пользователя
+        idd: id of some user
         """
         r = requests.get(self.request_url('friends.get',
                 'user_id=%s&fields=uid,first_name,last_name,photo' % idd)).json()
@@ -104,15 +106,14 @@ class VkGraph():
                 time.sleep(1.5)
         self.graph = nx.Graph(result)
     
-    def make_graph(self, speed="fast"):
+    def make_graph(self, speed="fast") -> Tuple[nx.Graph, dict]:
         self.friends(self.user_id)
         if speed == "fast":
             self.fast_common_friends()
         elif speed == "slow":
             self.slow_common_friends()
         else:
-            print("Error flag for vk make_graph")
-            return
+            logger.error("Error flag for vk make_graph")
+            return None, None
         
         return self.graph, self.users_info
-        

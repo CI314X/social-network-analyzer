@@ -6,7 +6,7 @@ from delete_file import delete_file
 from vk_graph import VkGraph
 from config import access_token
 from analyzer import preprocessing_graph, create_digree_distrbution, make_metrics_for_table, create_picture_social_network
-
+from custom_logger import logger
 
 class PDF(FPDF):
     def footer(self):
@@ -48,6 +48,9 @@ def generate_vk_pdf(name_pdf: str, user_id: int, user_name: str, option_download
     background_name = 'generated_docs/a4_color.png'  # 'blue_colored.png'
     vk = VkGraph(access_token=access_token, user_id=int(user_id))
     g, info = vk.make_graph(option_downloading_vk)
+    if g is None or info is None:
+        print("Error in vk.make_graph")
+        return
     g, info, n_deactivated, n_isolated = preprocessing_graph(g, info)
     
     pdf = PDF()
