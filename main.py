@@ -37,7 +37,6 @@ def create_and_send_message(user_name: str, id_link: int, email: str, pdf_name: 
         name of the PDF file to create
     option_downloading_vk: str
         either "fast" or "slow" - type of creating friend's graph
-    
     """
     generate_vk_pdf(pdf_name, id_link, user_name, option_downloading_vk)
 
@@ -50,6 +49,8 @@ def create_and_send_message(user_name: str, id_link: int, email: str, pdf_name: 
 
     with app.app_context():
             mail.send(message)
+    logger.info('Create PDF and sent message')
+    logger.info('')
     return
 
 
