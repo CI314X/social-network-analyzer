@@ -13,28 +13,30 @@ from transliterate import translit
 import matplotlib.image as mpimg
 from delete_file import delete_file
 
-def preprocessing_graph(g, info):
+def preprocessing_graph(g: nx.Graph, info: dict) -> Union[nx.Graph, dict, int, int]:
     n_deactivated = 0
     for i in list(info.keys()):
         if info[i].get('deactivated'):
             del info[i]
-            g.remove_node(i)
+            if g.has_node(i):
+                g.remove_node(i)
             n_deactivated += 1
     n_isolated = 0
     for i in list(nx.connected_components(g)):
         if len(i) == 1:
             index = i.pop()
-            g.remove_node(index)
+            if g.has_node(index):
+                g.remove_node(index)
             del info[index]
             n_isolated += 1
     return g, info, n_deactivated, n_isolated
     
 
-def powlaw(x, a, b) :
+def powlaw(x: float, a: float, b: float) -> float:
     return a * np.power(x, b)
 
 
-def linlaw(x, a, b) :
+def linlaw(x: float, a: float, b: float) -> float:
     return a + x * b
 
 
@@ -47,7 +49,7 @@ def curve_fit_log(xdata, ydata) :
     return ydatafit_log
 
 
-def create_digree_distrbution(g: nx.Graph, info_id: dict):
+def create_digree_distrbution(g: nx.Graph, info_id: dict) -> str:
     degree = dict(g.degree())
     degree_values = sorted(set(degree.values()))
     hist = [list(degree.values()).count(x) for x in degree_values]
@@ -95,7 +97,7 @@ def return_name(id_user: int, info: dict, type_graph: str) -> str:
         name = translit(info[id_user]['name'], "ru", reversed=True)
         return name
 
-def make_column_for_one_metric(metrics, info, n, type_graph: str) -> list:
+def make_column_for_one_metric(metrics, info: dict, n: int, type_graph: str) -> list:
     top_metrics = take_top_metrics(metrics, n)
     return [return_name(idd[0], info, type_graph) for idd in top_metrics]
     

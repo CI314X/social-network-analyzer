@@ -1,3 +1,4 @@
+from logging import Logger
 import networkx as nx
 import requests
 import random
@@ -81,7 +82,6 @@ class VkGraph():
 
     def slow_common_friends(self):
         result = defaultdict(list)
-        # users_info = set()
         steps = 0
         for user_id in list(self.users_info.keys()):
             steps += 1
@@ -93,7 +93,6 @@ class VkGraph():
                         break
                     elif req['error']['error_code'] == 18:
                         break
-                    #time.sleep(1)
                     continue
                 else:
                     req = req['response']['items']
@@ -102,7 +101,7 @@ class VkGraph():
                             result[int(user_id)].append(int(key))
                     break
             if steps % 5 == 0:
-                time.sleep(1)
+                time.sleep(1.5)
         self.graph = nx.Graph(result)
     
     def make_graph(self, speed="fast"):
@@ -112,7 +111,8 @@ class VkGraph():
         elif speed == "slow":
             self.slow_common_friends()
         else:
-            print("Error flag for vk make_graph") # throw
+            print("Error flag for vk make_graph")
+            return
         
         return self.graph, self.users_info
         

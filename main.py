@@ -14,11 +14,27 @@ from email_validator import validate_email, EmailNotValidError
 from vk_graph import resolve_url_to_id
 import vk_api
 
+import sys
+import logging
+
 app = Flask(__name__)
 app.config.from_object('config')
 
 
 mail = Mail(app)
+
+logger_filename = 'logs.log'
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+formatter = logging.Formatter('%(asctime)s | %(levelname)s | %(message)s')
+stdout_handler = logging.StreamHandler(sys.stdout)
+stdout_handler.setLevel(logging.DEBUG)
+stdout_handler.setFormatter(formatter)
+file_handler = logging.FileHandler(logger_filename)
+file_handler.setLevel(logging.DEBUG)
+file_handler.setFormatter(formatter)
+logger.addHandler(file_handler)
+logger.addHandler(stdout_handler)
 
 
 def create_and_send_message(user_name: str, id_link: int, email: str, pdf_name: str, option_downloading_vk: str) -> None:
@@ -44,22 +60,33 @@ def main_form_vl_statistics():
         user_name = request.form.get('user_name')
         id_link = request.form.get('link')
         option_downloading_vk = request.form.get('option_download')
+
+        logger.info(f'Email: {email}')
+        logger.info(f'User name: {user_name}')
+        logger.info(f'vk id: {id_link}')
+        logger.info(f'Option: {option_downloading_vk}')
+
         try:
             valid = validate_email(email)
             email = valid.email
             vk = vk_api.VkApi(token=random.choice(access_token))
             vk_id, is_closed, can_access_closed = resolve_url_to_id(vk, id_link)
         except EmailNotValidError as e:
+            logger.error(f'Wrong email. {str(e)}')
             return f'<p>Wrong email. {str(e)}</p>'
         except vk_api.vk_api.ApiError as e:
+            logger.error(f'Wrong link for vk profile. {str(e)}')
             return f'<p>Wrong link for vk profile. {str(e)}</p>'
         except:
+            logger.error('Unknown error')
             return f'<p>Unknown error</p>'
 
         if is_closed and not can_access_closed:
+            logger.error('Account is closed, no access to information')
             return f'<p>Account is closed, no access to information</p>'
 
         if option_downloading_vk not in ['fast', 'slow']:
+            logger.error('Wrong option')
             return f'<p>Wrong option</p>'
 
         pdf_name = "generated_docs/" + user_name + ".pdf"
@@ -76,7 +103,6 @@ def main_form_vl_statistics():
     return render_template('vk_statistics.html')
 
 
-
 @app.route("/")
 def hello_world():
     return render_template('root.html')
@@ -86,8 +112,3 @@ def hello_world():
 def bad_request():
     """ error """
     return abort(400)
-
-# try:
-# except:
-# return redirect(url_for('bad_request'))
-# you can add to all
