@@ -87,7 +87,9 @@ def take_top_metrics(x: dict, n: int) -> list:
 def return_name(id_user: int, info: dict, type_graph: str) -> str:
     if type_graph == 'vk':
         first_name = translit(info[id_user]['first_name'], "ru", reversed=True)
+        first_name = first_name.encode('latin-1', 'ignore').decode("latin-1")
         last_name = translit(info[id_user]['last_name'], "ru", reversed=True)
+        last_name = last_name.encode('latin-1', 'ignore').decode("latin-1")
         return first_name + " " + last_name
     elif type_graph == 'facebook':
         name = translit(info[id_user]['name'], "ru", reversed=True)

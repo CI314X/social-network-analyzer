@@ -21,9 +21,9 @@ app.config.from_object('config')
 mail = Mail(app)
 
 
-def create_and_send_message(user_name: str, id_link: int, email: str, pdf_name: str) -> None:
+def create_and_send_message(user_name: str, id_link: int, email: str, pdf_name: str, option_downloading_vk: str) -> None:
 
-    generate_vk_pdf(pdf_name, id_link, user_name)
+    generate_vk_pdf(pdf_name, id_link, user_name, option_downloading_vk)
 
     message = Message('VK statistics', sender = ADMINS[0], recipients = [email])
     message.body = f'Sending informatin to {user_name}.\nvk id = {id_link}.\n\n\n\nBest wishes, Daniil Konstantinov'
@@ -66,10 +66,10 @@ def main_form_vl_statistics():
 
         process_creating_message = Process(
             target=create_and_send_message,
-            args=(user_name, vk_id, email, pdf_name),
+            args=(user_name, vk_id, email, pdf_name, option_downloading_vk),
             daemon=True
         )
-        # process_creating_message.start()
+        process_creating_message.start()
         
         return f'<p>Sent to {email}</p>'
 

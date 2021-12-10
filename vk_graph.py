@@ -12,7 +12,8 @@ def resolve_url_to_id(vk, url):
     info = vk.method('users.get', {'user_ids': screen_name})[0]
     _id = info['id']
     _is_closed = info['is_closed']
-    return _id, _is_closed
+    _can_access_closed = info['can_access_closed']
+    return _id, _is_closed, _can_access_closed
 
 
 class VkGraph():

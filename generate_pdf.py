@@ -42,12 +42,12 @@ class PDF(FPDF):
         self.cell(sum(col_widths), 0, "", "T")
 
 
-def generate_vk_pdf(name_pdf: str, user_id: int, user_name: str) -> None:
+def generate_vk_pdf(name_pdf: str, user_id: int, user_name: str, option_downloading_vk: str) -> None:
     user_name = translit(user_name, "ru", reversed=True)
     type_graph = "vk"
     background_name = 'generated_docs/a4_color.png'  # 'blue_colored.png'
     vk = VkGraph(access_token=access_token, user_id=int(user_id))
-    g, info = vk.make_graph("fast")
+    g, info = vk.make_graph(option_downloading_vk)
     g, info, n_deactivated, n_isolated = preprocessing_graph(g, info)
     
     pdf = PDF()
@@ -102,13 +102,11 @@ def generate_vk_pdf(name_pdf: str, user_id: int, user_name: str) -> None:
     pdf.set_y(150)
 
     col_names, rows = make_metrics_for_table(g, info, 5, type_graph)
-
     pdf.colored_table(col_names, rows)
     pdf.set_y(220)
     pdf.set_font("helvetica", style="B",size=13)
     pdf.cell(we, he, f"Probably, your best friend is {rows[0][2]}!", border=0, ln=1, center=False)
 
-    #pdf.write(20, )
     #######################################################
     pdf.add_page()
     pdf.image(background_name, x = 0, y = 0, w = 210, h = 297, type = '', link = '')
