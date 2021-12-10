@@ -36,4 +36,5 @@ user@user:~$ sudo yam install -y docker git
 user@user:~$ docker-compose up --build
 ```
 
+#### Link: https://goo.su/9TQN
 #### Link: http://ec2-3-137-176-123.us-east-2.compute.amazonaws.com:5555/
