@@ -42,7 +42,7 @@ class PDF(FPDF):
         self.cell(sum(col_widths), 0, "", "T")
 
 
-def generate_vk_pdf(name_pdf: str, user_id: str, user_name: str) -> None:
+def generate_vk_pdf(name_pdf: str, user_id: int, user_name: str) -> None:
     user_name = translit(user_name, "ru", reversed=True)
     type_graph = "vk"
     background_name = 'generated_docs/a4_color.png'  # 'blue_colored.png'
