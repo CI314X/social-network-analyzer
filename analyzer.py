@@ -14,6 +14,7 @@ import matplotlib.image as mpimg
 from delete_file import delete_file
 from custom_logger import logger
 
+
 def preprocessing_graph(g: nx.Graph, info: dict) -> Tuple[nx.Graph, dict, int, int]:
     n_deactivated = 0
     for i in list(info.keys()):
@@ -79,13 +80,22 @@ def return_photo_vk(userid: int, info: str) -> Image:
     img = Image.open(BytesIO(response.content))
     return img
 
+
 def take_top_metrics(x: dict, n: int) -> list:
     """
-    x: ("id": number)
-    @return: [("id": metric)] - list of biggest n metrics with "id"
+    Parameters
+    ----------
+    x : dict
+        ("id": number)
+
+    Returns
+    -------
+    list
+        a list of biggest n metrics with "id" [("id": metric)]
     """
     sorted_x = sorted(x.items(), key=operator.itemgetter(1))[::-1]
     return sorted_x[:n]
+
 
 def return_name(id_user: int, info: dict, type_graph: str) -> str:
     """Concatenate name for vk or facebook"""
@@ -99,6 +109,7 @@ def return_name(id_user: int, info: dict, type_graph: str) -> str:
         name = translit(info[id_user]['name'], "ru", reversed=True)
         return name
 
+
 def make_column_for_one_metric(metrics, info: dict, n: int, type_graph: str) -> list:
     top_metrics = take_top_metrics(metrics, n)
     return [return_name(idd[0], info, type_graph) for idd in top_metrics]
@@ -106,6 +117,7 @@ def make_column_for_one_metric(metrics, info: dict, n: int, type_graph: str) -> 
     
 def make_metrics_for_table(g: nx.Graph, info: dict, n: int, type_graph: str ='vk') -> Tuple[List[str], list]:
     """
+    g: graph
     info: information about users
     n: number of top metrics
     return: column_names, rows
@@ -122,7 +134,15 @@ def make_metrics_for_table(g: nx.Graph, info: dict, n: int, type_graph: str ='vk
     rows[3] = make_column_for_one_metric(metrics, info, n, type_graph)
     return column_names, np.array(rows).T.tolist()
 
+
 def create_picture_social_network(g: nx.Graph, info: dict, user_id: int, type_graph: str) -> Tuple[list, str]:
+    """
+    g: graph
+    info: information about users
+    user_id: using just for saving images
+    type_graph: vk or facebook
+    return: names of main nodes in clusters and name of created picture
+    """
     part = community_louvain.best_partition(g)
     values = [part.get(node) for node in g.nodes()]
     # pos = nx.spring_layout(g, scale=1, iterations=100, threshold=1e-6)

@@ -9,6 +9,9 @@ from analyzer import preprocessing_graph, create_digree_distrbution, make_metric
 from custom_logger import logger
 
 class PDF(FPDF):
+    """
+    A wrapper class on a FPDF with customized table
+    """
     def footer(self):
         # Position cursor at 1.5 cm from bottom:
         self.set_y(-15)

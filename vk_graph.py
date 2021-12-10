@@ -20,6 +20,35 @@ def resolve_url_to_id(vk: vk_api.vk_api.VkApi, url: str) -> Tuple[int, bool, boo
 
 
 class VkGraph():
+    """
+    A class used to get a graph of friends in vk.com
+
+    Attributes
+    ----------
+    access_token : list(str)
+        list of tokens for your vk account
+    api_version: int
+        current api version
+    user_id : int
+        id of the user to be analyzed
+    users_info: dict
+        information about every user in graph
+    graph: list
+        graph of the user_id network
+
+    Methods
+    -------
+    request_url(method_name, parameters)
+        Creates prerequest
+    friends(idd)
+        Gets information about user with idd
+    fast_common_friends()
+        Fast creating friend's graph (125 api requests in a second)
+    slow_common_friends()
+        Slow creating friend's graph (5 api request in a second)
+    make_graph(speed="fast")
+        Run a process of a creating friend's graph
+    """
     def __init__(self, access_token: List[str], user_id: int):
         """user_id - who will be analyzed"""
         self._access_token= access_token
@@ -55,12 +84,11 @@ class VkGraph():
         Fast make a friend graph
         """
         def parts(lst, n=25):
-            """ разбиваем список на части - по 25 в каждой """
+            """ Breaking list in a parts - 25 in every one """
             return [lst[i:i + n] for i in range(0, len(lst), n)]
         steps = 0
         for i in parts(list(self.users_info.keys())):
             steps += 1
-            # Form code (parameter execute)
             code = 'return {'
             for user_id in i:
                 code += f'"{user_id}": API.friends.getMutual({{"source_uid":{self.user_id}, "target_uid":{user_id}}}),'
