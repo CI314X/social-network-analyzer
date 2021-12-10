@@ -5,6 +5,14 @@ from collections import defaultdict
 import time
 
 
+def resolve_url_to_id(vk, url):
+    """convert user's url to id***"""
+
+    screen_name = url.split('/')[-1]
+    _id = vk.method('users.get', {'user_ids': screen_name})[0]['id']
+    return _id
+
+
 class VkGraph():
     def __init__(self, access_token, user_id):
         """user_id - who will be analyzed"""

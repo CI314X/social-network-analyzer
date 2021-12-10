@@ -9,8 +9,10 @@ from config import ADMINS
 from multiprocessing import Process
 from generate_pdf import generate_vk_pdf
 from delete_file import delete_file
+from email_validator import validate_email, EmailNotValidError
 
-
+from vk_graph import resolve_url_to_id
+import vk_api
 
 app = Flask(__name__)
 app.config.from_object('config')
@@ -27,7 +29,7 @@ class MainForm(FlaskForm):
     link = StringField('link', validators=[DataRequired()])
 
 
-def create_and_send_message(user_name: str, id_link: str, email: str, pdf_name: str) -> None:
+def create_and_send_message(user_name: str, id_link: int, email: str, pdf_name: str) -> None:
 
     generate_vk_pdf(pdf_name, id_link, user_name)
 
@@ -49,12 +51,23 @@ def main_form_data():
         email = request.form.get('email')
         user_name = request.form.get('user_name')
         id_link = request.form.get('link')
+        try:
+            valid = validate_email(email)
+            email = valid.email
+
+            vk = vk_api.VkApi(token="cabd15ea3085b7047b7b0b9847c5b76a331443cbc26b0e45401914e66f365ffd0615bb32446e556a56d4d")
+            _id = resolve_url_to_id(vk, id_link)
+        except EmailNotValidError as e:
+            return f'<p>Wrong email. {str(e)}</p>'
+        except vk_api.vk_api.ApiError as e:
+            return f'<p>Wrong link for vk profile. {str(e)}</p>'
+
 
         pdf_name = "generated_docs/" + user_name + ".pdf"
 
         process_creating_message = Process(
             target=create_and_send_message,
-            args=(user_name, id_link, email, pdf_name),
+            args=(user_name, _id, email, pdf_name),
             daemon=True
         )
         process_creating_message.start()
@@ -90,6 +103,7 @@ def main_form():
 @app.route('/submit', methods=['GET', 'POST'])
 def submit(): 
     form = MyForm()
+    
     if form.validate_on_submit():
         print(form.name.data)
         return '<img src="/static/asd.jpg" alt="micropenis">'
