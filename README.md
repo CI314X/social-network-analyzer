@@ -2,7 +2,7 @@
 This project was realized on Python with Flask library. It allows you to create a PDF file with some statistics about particular vk page (but this page should not be closed).<br>
 
 
-### Instruction for running:
+### Tutorial:
 1. Install docker and docker-compose
 2. Clone this repository
 3. Fill a config file:
