@@ -8,7 +8,7 @@ This project was realized on Python with Flask library. It allows you to create 
 3. Fill a config file:
   * MAIL_USERNAME: name of your mail box without domen.
   * MAIL_PASSWORD: password of this mail box.
-  * SECRET_KEY and WTF_CSRF_SECRET_KEY: some flags for FLASK-WTF (just google it).
+  * SECRET_KEY and WTF_CSRF_SECRET_KEY: some random strings.
   * ADMINS: your full name of mail box.
   * access_token: tokens for vk class (https://vkhost.github.io/). It is recommended to specify more than 2 tokens.
 
