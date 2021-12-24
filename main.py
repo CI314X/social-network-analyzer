@@ -2,15 +2,13 @@ from flask import Flask, render_template, request, abort
 from flask_mail import Mail, Message
 from config import ADMINS, access_token, telegram_token
 import random
-
 from multiprocessing import Process
 from generate_pdf import generate_vk_pdf
 from delete_file import delete_file
 from email_validator import validate_email, EmailNotValidError
-
 from vk_graph import resolve_url_to_id
 import vk_api
-
+from custom_logger import logger
 import telebot
 
 
@@ -19,8 +17,6 @@ app.config.from_object('config')
 
 
 mail = Mail(app)
-
-from custom_logger import logger
 
 
 def create_and_send_message(user_name: str, id_link: int, email: str, telegram_id: str, pdf_name: str, option_downloading_vk: str) -> None:
@@ -64,11 +60,8 @@ def create_and_send_message(user_name: str, id_link: int, email: str, telegram_i
         except Exception as e:
             logger.error(f'Problem with telegram ID: {str(e)}')
 
-    
     delete_file(pdf_name)
-
-
-    logger.info('End of work')
+    logger.info('End of procedure')
     return
 
 
@@ -78,7 +71,6 @@ def root():
     Main page with all information
     """
     return render_template('root.html')
-
 
 
 @app.route('/badrequest400')
@@ -94,12 +86,11 @@ def main_form():
     """
 
     if request.method == 'POST':
-        logger.info('Start procedure')
+        logger.info('Start of procedure')
         email = request.form.get('email')
         user_name = request.form.get('user_name')
         vk_link = request.form.get('vk_link')
         telegram_id = request.form.get('telegram_link')
-
         option_downloading_vk = request.form.get('download_option')
         
         logger.info(f'user name: {user_name}')
@@ -137,6 +128,7 @@ def main_form():
         if option_downloading_vk not in ['fast', 'slow']:
             logger.error('Wrong option')
             return f'<p>Wrong option</p>'
+
         if telegram_id:
             try:
                 bot = telebot.TeleBot(telegram_token)
@@ -159,6 +151,4 @@ def main_form():
             return f'<p>Sent. Telegram ID: {telegram_id}</p>'
         if email:
             return f'<p>Sent. Email: {email}</p>'
-
-
     return render_template('vk_stat.html')
