@@ -11,6 +11,7 @@ This project was realized on Python with Flask library. It allows you to create 
   * SECRET_KEY and WTF_CSRF_SECRET_KEY: some random strings.
   * ADMINS: your full name of mail box.
   * access_token: tokens for vk class (https://vkhost.github.io/). It is recommended to specify more than 2 tokens.
+  * telegram_token (optional): token for telegram bot. You have to create bot in telegram via BotFather and copy an authentication token (https://core.telegram.org/bots)
 
 4. Build docker:
 ```console
