@@ -94,7 +94,7 @@ def main_form():
     """
 
     if request.method == 'POST':
-        logger.info('POST smth')
+        logger.info('Start procedure')
         email = request.form.get('email')
         user_name = request.form.get('user_name')
         vk_link = request.form.get('vk_link')
