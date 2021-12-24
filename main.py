@@ -153,7 +153,12 @@ def main_form():
             daemon=True
         )
         process_creating_message.start()
-        
-        return f'<p>Sent. Email: {email}. Telegram ID: {telegram_id}</p>'
+        if email and telegram_id:
+            return f'<p>Sent. Email: {email}. Telegram ID: {telegram_id}</p>'
+        if telegram_id:
+            return f'<p>Sent. Telegram ID: {telegram_id}</p>'
+        if email:
+            return f'<p>Sent. Email: {email}</p>'
+
 
     return render_template('vk_stat.html')
