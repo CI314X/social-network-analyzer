@@ -1,4 +1,4 @@
-# Web project for analysing social network
+# Web project for analyzing social network
 This project was realized on Python with Flask library. It allows you to create a PDF file with some statistics about particular vk page (but this page should not be closed).<br>
 
 
