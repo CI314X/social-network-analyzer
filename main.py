@@ -38,6 +38,7 @@ def create_and_send_message(user_name: str, id_link: int, email: str, pdf_name: 
     option_downloading_vk: str
         either "fast" or "slow" - type of creating friend's graph
     """
+    logger.info('start creating pdf file')
     generate_vk_pdf(pdf_name, id_link, user_name, option_downloading_vk)
 
     message = Message('VK statistics', sender = ADMINS[0], recipients = [email])
@@ -50,8 +51,7 @@ def create_and_send_message(user_name: str, id_link: int, email: str, pdf_name: 
     with app.app_context():
             mail.send(message)
     logger.info('Create PDF and sent message')
-    logger.info('')
-    return
+    return 
 
 
 @app.route('/vk_statistics', methods=['GET', 'POST'])
@@ -60,6 +60,7 @@ def main_form_vl_statistics():
     On this page you can specify data for analysis
     """
     if request.method == 'POST':
+        logger.info('POST smth')
         email = request.form.get('email')
         user_name = request.form.get('user_name')
         id_link = request.form.get('link')
