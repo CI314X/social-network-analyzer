@@ -27,7 +27,7 @@ This project was realized on Python with Flask library. It allows you to create 
 
 ### Front page
 <p align="left">
-  <img src="static/readme_picture_vk_stat.png" width="400" title="screenshot">
+  <img src="static/readme_picture_vk_stat.png" width="800" title="screenshot">
 </p>
 
 ### Instruction for running project on Amazon AWS
