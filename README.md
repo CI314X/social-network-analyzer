@@ -22,7 +22,7 @@ user@user:~$ docker-compose up --build
 
 ### Front page
 <p align="left">
-  <img src="readme_picture_vk_stat.png" width="400" title="screenshot">
+  <img src="static/readme_picture_vk_stat.png" width="400" title="screenshot">
 </p>
 
 ### Instruction for running project on Amazon AWS
