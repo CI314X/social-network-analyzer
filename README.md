@@ -17,6 +17,7 @@ This project was realized on Python with Flask library. It allows you to create 
   * SECRET_KEY and WTF_CSRF_SECRET_KEY: some random strings.
   * ADMINS: your full name of mail box.
   * access_token: tokens for vk class (https://vkhost.github.io/). It is recommended to specify more than 2 tokens.
+  * logger_filename: the pathname of the source file where the logging call was made.
   * telegram_token (optional): token for telegram bot. You have to create bot in telegram via BotFather and copy an authentication token (https://core.telegram.org/bots)
 
 4. Build docker:
@@ -32,7 +33,8 @@ This project was realized on Python with Flask library. It allows you to create 
   <img src="static/readme_picture_vk_stat.png" width="800" title="screenshot">
 </p>
 
-### Instruction for running project on Amazon AWS
+### Instruction for running project on Amazon AWS:
+
 * Create an account in a service
 * Create public and private keys: my_key.pem
 * After config your virtual machine, run next:
@@ -43,5 +45,4 @@ user@user:~$ sudo yam install -y docker git
 user@user:~$ docker-compose up --build
 ```
 
-#### Link: https://goo.su/9TQN
-#### Link: http://ec2-3-137-176-123.us-east-2.compute.amazonaws.com:5555/
+#### Global link: https://goo.su/9TQN or http://ec2-3-137-176-123.us-east-2.compute.amazonaws.com:5555
