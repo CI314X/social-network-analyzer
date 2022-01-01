@@ -5,10 +5,13 @@ This project was realized on Python with Flask library. It allows you to create 
 ### Tutorial:
 1. Install docker and docker-compose
 2. Clone this repository
+
   * ```console
     user@user:~$ git clone https://github.com/CI314X/social-network-analyzer.git
     ```
+    
 3. Fill a config file:
+
   * MAIL_USERNAME: name of your mail box without domen.
   * MAIL_PASSWORD: password of this mail box.
   * SECRET_KEY and WTF_CSRF_SECRET_KEY: some random strings.
@@ -17,13 +20,12 @@ This project was realized on Python with Flask library. It allows you to create 
   * telegram_token (optional): token for telegram bot. You have to create bot in telegram via BotFather and copy an authentication token (https://core.telegram.org/bots)
 
 4. Build docker:
+
 *  ```console
    user@user:~$ docker-compose up --build
    ```
 
-
-
-#### Link: http://localhost:5555/
+#### Local link: http://localhost:5555/
 
 ### Front page
 <p align="left">

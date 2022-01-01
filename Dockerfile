@@ -5,6 +5,5 @@ RUN mkdir $PROJECT_ROOT
 
 COPY . $PROJECT_ROOT
 WORKDIR $PROJECT_ROOT
-RUN pip3 install Cython
 RUN apt-get update && apt-get install graphviz-dev -y && apt-get install graphviz -y
-RUN pip install -r requirements.txt
+RUN pip3 install -r requirements.txt
