@@ -44,5 +44,3 @@ user@user:~$ sudo ssh -i my_key.pem ec2-user@ec2-3-137-176-123.us-east-2.compute
 user@user:~$ sudo yam install -y docker git
 user@user:~$ docker-compose up --build
 ```
-
-#### Global link: https://goo.su/9TQN or http://ec2-3-137-176-123.us-east-2.compute.amazonaws.com:5555
