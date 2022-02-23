@@ -5,5 +5,4 @@ downloaded_graphs/*
 .vscode/*
 __pycache__/*
 
-## add confif
-config.py
+/config.py
