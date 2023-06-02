@@ -1,6 +1,7 @@
 # Web project for analyzing social network
 This project was realized on Python with Flask library. It allows you to create a PDF file with some statistics about particular vk page (but this page should not be closed).<br>
 
+## Link: http://45.67.35.81:5555/vk_statistics
 
 ### Tutorial:
 1. Install docker and docker-compose
@@ -26,7 +27,7 @@ This project was realized on Python with Flask library. It allows you to create 
    user@user:~$ docker-compose up --build
    ```
 
-#### Local link: http://localhost:5555/
+<!-- #### Local link: http://localhost:5555/ -->
 
 ### Front page
 <p align="left">
